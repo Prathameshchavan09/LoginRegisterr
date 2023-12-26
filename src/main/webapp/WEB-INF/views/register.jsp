@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
-    <%@ page isELIgnored="false"%>
-    
+<%@ page isELIgnored="false"%>
+    	
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,13 +15,12 @@
             <div class="col-md-6 offset-md-3">
                 <h1 class="text-center mb-3">Registration Form</h1>
                 <form action="registerProcess" method="POST" id="registrationForm">
-                
-                <c:if test="${not empty Register}">
-						<strong>${Register}</strong>
-						
-				</c:if>		
-					
-                
+                    <!-- Display message -->
+                    <c:if id="message" test="${not empty Register}">
+                        <strong>${Register}</strong>
+                    </c:if>		
+                    
+                    <!-- Form fields -->
                     <div class="form-group">
                         <label for="inputName">Name</label>
                         <input name="name" type="text" class="form-control" id="inputName" placeholder="Name" required>
@@ -43,25 +41,30 @@
                         <input type="submit" id="registeredAlert" class="btn btn-primary" value="Submit" />
                     </div>
                 </form>
+                
+                <!-- Login link initially hidden -->
                 <a href="login" class="btn btn-outline-danger" id="HideShow" style="display: none">Login</a>
             </div>
-        </div>
+        </div>	
     </div>
 
     <script>
-    
-    document.addEventListener("DOMContentLoaded", function() {
-        var hideShow = document.getElementById("HideShow");
-        if (sessionStorage.getItem("formSubmitted")) {
-            hideShow.style.display = "block";
-            hideShow.style.marginLeft = "235px";
-            hideShow.style.marginTop = "10px";
-            hideShow.style.width = "70px";
-        }
-    });
-    
-    
-    
+        document.addEventListener("DOMContentLoaded", function() {
+            var hideShow = document.getElementById("HideShow");
+            var message = document.getElementById("message");
+            
+            // Check if the form has been successfully submitted previously
+            if (sessionStorage.getItem("formSubmitted")) {
+                hideShow.style.display = "block"; // Show the login link
+                hideShow.style.marginLeft = "235px";
+                hideShow.style.marginTop = "10px";
+                hideShow.style.width = "70px";
+                
+                message.innerHTML = "<strong>Login Successfully!</strong>"; // Display success message
+                message.style.display = "block";
+            }
+        });
+        
         document.getElementById("registrationForm").addEventListener("submit", function(event) {
             var name = document.getElementById("inputName").value;
             var city = document.getElementById("inputCity").value;
@@ -72,15 +75,22 @@
                 alert("Fill in all details");
             } else {
                 alert("The form has been submitted.");
-                sessionStorage.setItem("formSubmitted", "true");
-                location.reload();
+                sessionStorage.setItem("formSubmitted", "true"); // Set form submission status
                 var hideShow = document.getElementById("HideShow");
-                hideShow.style.display = "block";
+                location.reload();
+                hideShow.style.display = "block"; // Show the login link
                 hideShow.style.marginLeft = "235px";
                 hideShow.style.marginTop = "10px";
                 hideShow.style.width = "70px";
+                
+                var message = document.getElementById("message");
+                message.innerHTML = "<strong>Login Successfully!</strong>"; // Update success message
+                message.style.display = "block";
             }
+            
         });
+        
+     
     </script>
 </body>
 </html>
